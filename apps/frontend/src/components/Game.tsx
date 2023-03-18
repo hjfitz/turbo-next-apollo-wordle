@@ -1,16 +1,12 @@
-import { useEffect, useState } from "react"
+import { KeyboardEvent, useEffect, useState } from 'react'
+import {GuessToken, GuessState, RowContainer} from './Row'
 
 export interface IGameProps {
 	word: string
 	numGuesses: number
 }
 
-enum GuessState { WrongPlace, CorrectPlace, WrongChar, NoGuess }
 
-interface GuessToken {
-	char: string
-	state: GuessState
-}
 
 enum GameState {Playing, Won, Lost}
 
@@ -21,7 +17,7 @@ function createGuessLineup(numGuesses: number): GuessToken[][] {
 }
 
 function padEnd<T>(array: T): T {
-    return Object.assign(new Array(5).fill(' '), array);
+	return Object.assign(new Array(5).fill(' '), array)
 }
 
 export const Game = ({word, numGuesses}: IGameProps) => {
@@ -34,7 +30,10 @@ export const Game = ({word, numGuesses}: IGameProps) => {
 		return () => document.removeEventListener('keyup', updateGuess)
 	}, [])
 
-	function updateGuess(ev) {
+	function updateGuess(ev: any) {
+		if (gameState !== GameState.Playing)
+			return
+
 		if (ev.key === 'Enter') 
 			submitGuess()
 
@@ -53,15 +52,15 @@ export const Game = ({word, numGuesses}: IGameProps) => {
 		setGuesses(curGuesses => {
 			return curGuesses.map(row => {
 				return row.map(({char}, idx) => {
-					if (char.trim() === '') {
+					if (char.trim() === '') 
 						return {char: ' ', state: GuessState.NoGuess}
-					}
-					if (word[idx] === char) {
+					
+					if (word[idx] === char) 
 						return {char, state: GuessState.CorrectPlace}
-					}
-					if (word.includes(char)) {
+					
+					if (word.includes(char)) 
 						return {char, state: GuessState.WrongPlace}
-					}
+					
 					return {char, state: GuessState.WrongChar}
 				})
 			})
@@ -80,37 +79,27 @@ export const Game = ({word, numGuesses}: IGameProps) => {
 	}, [curGuess])
 
 	useEffect(() => {
+		const mostRecentGuess = guesses.findLast(g => g[0].state !== GuessState.NoGuess)
+		const hasWon = mostRecentGuess?.every(g => g.state === GuessState.CorrectPlace)
+		if (hasWon) {
+			setGameState(GameState.Won)
+		}
+
+		const hasLost = guesses.every(attempt => attempt.every(char => char.state !== GuessState.NoGuess))
+		if (hasLost) {
+			setGameState(GameState.Lost)
+		}
+	}, [guesses])
+
+	useEffect(() => {
 		if (gameState !== GameState.Playing)
 			document.removeEventListener('keyup', updateGuess)
 	}, [gameState])
 
 	return (
 		<section>
-			{guesses.map(guessChars => {
-				const innerRow = guessChars.map(guess => {
-					let className = 'border-2 border-gray-500' // NoGuess
-					switch (guess.state) {
-					case (GuessState.WrongPlace): {
-						className = 'bg-yellow-500'
-						break
-					}
-					case (GuessState.WrongChar): {
-						className = 'bg-zinc-700'
-						break
-					}
-					case (GuessState.CorrectPlace): {
-						className = 'bg-green-600'
-						break
-					}
-					}
-					return (
-						<span className={`inline-block m-4 text-center leading-10 h-24 w-24 ${className}`}>
-							<p className="text-3xl">{guess.char}</p>
-						</span>
-					)
-				})
-				return <div>{innerRow}</div>
-			})}
+			{guesses.map((guessChars, idx) => <RowContainer chars={guessChars} key={idx} />)}
 		</section>
 	)
+
 }
