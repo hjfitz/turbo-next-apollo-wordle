@@ -5,13 +5,15 @@
   "main": "index.js",
   "type": "module",
   "scripts": {
-    "start:dev": "nodemon --exec 'ts-node --esm' src/index.ts"
+    "start:dev": "NODE_ENV=development nodemon --exec 'ts-node --esm' src/index.ts",
+    "start": "NODE_ENV=production ts-node --esm src/index.ts"
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
   "dependencies": {
     "@apollo/server": "^4.5.0",
+    "@as-integrations/aws-lambda": "^2.0.1",
     "graphql": "^16.6.0"
   },
   "devDependencies": {

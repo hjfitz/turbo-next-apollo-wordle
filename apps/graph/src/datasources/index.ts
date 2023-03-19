@@ -1,2 +1,2 @@
-export * from './types.ts'
-export * from './datasource.factory.ts'
+export * from './types.js'
+export * from './datasource.factory.js'

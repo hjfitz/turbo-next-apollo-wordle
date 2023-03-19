@@ -2,7 +2,7 @@ import path from 'node:path'
 import fs from 'node:fs'
 import { fileURLToPath } from 'node:url'
 
-import { WordSource } from './word.datasource.ts'
+import { WordSource } from './word.datasource.js'
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url))
 

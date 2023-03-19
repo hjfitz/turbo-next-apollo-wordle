@@ -1,23 +1,13 @@
-import { ApolloServer } from '@apollo/server'
 import { startStandaloneServer } from '@apollo/server/standalone'
 
-import { resolvers } from './resolvers.js'
-import { typeDefs } from './typedefs.js'
-import { DatasourceFactory, IWordSource } from './datasources/index.ts'
-
-interface ContextValue {
-	dataSources: {
-		wordSource: IWordSource
-	}
-}
-
-const server = new ApolloServer<ContextValue>({
-	typeDefs,
-	resolvers,
-})
+import { DatasourceFactory } from './datasources/index.js'
+import { server } from './server.js'
+import { config } from './config.js'
 
 const { url } = await startStandaloneServer(server, {
-	listen: { port: 3001 },
+	listen: {
+		port: config.PORT,
+	},
 	context: async () => {
 		return {
 			dataSources: {

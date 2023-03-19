@@ -5,7 +5,7 @@
   "main": "index.js",
   "scripts": {
     "start:dev": "turbo run start:dev",
-	"lint": "eslint apps/**/*"
+    "lint": "eslint apps/**/*"
   },
   "workspaces": [
     "apps/**"
@@ -24,6 +24,9 @@
     "typescript": "^5.0.2"
   },
   "dependencies": {
-    "graphql": "^16.6.0"
+    "dotenv": "^16.0.3",
+    "dotenv-flow": "^3.2.0",
+    "graphql": "^16.6.0",
+    "zod": "^3.21.4"
   }
 }

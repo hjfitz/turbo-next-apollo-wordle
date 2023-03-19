@@ -1,4 +1,4 @@
-import type { IWordSource } from './types.ts'
+import type { IWordSource } from './types.js'
 
 export class WordSource implements IWordSource {
 	constructor(private readonly wordList: string[]) {}
