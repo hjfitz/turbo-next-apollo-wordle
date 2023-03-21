@@ -5,6 +5,7 @@
   "main": "index.js",
   "scripts": {
     "start:dev": "turbo run start:dev",
+	"build": "turbo run build",
     "lint": "eslint apps/**/*"
   },
   "workspaces": [

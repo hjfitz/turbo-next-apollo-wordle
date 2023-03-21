@@ -6,7 +6,8 @@
   "type": "module",
   "scripts": {
     "start:dev": "NODE_ENV=development nodemon --exec 'ts-node --esm' src/index.ts",
-    "start": "NODE_ENV=production ts-node --esm src/index.ts"
+    "start": "NODE_ENV=production ts-node --esm src/index.ts",
+	"build": "tsc"
   },
   "keywords": [],
   "author": "",
